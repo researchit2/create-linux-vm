@@ -2,4 +2,4 @@
 
 apt update; apt upgrade -y -qq
 apt install -y wget
-reboot
+/sbin/reboot
