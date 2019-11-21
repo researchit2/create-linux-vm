@@ -6,7 +6,6 @@ from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.network import NetworkManagementClient
 from msrestazure.azure_exceptions import CloudError
-# from azure.mgmt.network.v2019_02_01.models import PublicIPPrefix
 
 azure_tenant_id = os.environ.get("AZURE_TENANT_ID")
 azure_client_id = os.environ.get("AZURE_CLIENT_ID")
