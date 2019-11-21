@@ -2,4 +2,4 @@
 
 apt update; apt upgrade -y -qq
 apt install -y wget
-/sbin/reboot
+/sbin/shutdown -h now
