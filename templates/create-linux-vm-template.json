@@ -44,15 +44,6 @@
         "adminPassword": {
             "type": "secureString"
         },
-        "customExtensionTimestamp": {
-            "type": "string"
-        },
-        "customExtensionCommandToExecute": {
-            "type": "string"
-        },
-        "customExtensionFileUris": {
-            "type": "array"
-        },
         "costCenter": {
             "type": "string"
         },
@@ -209,13 +200,12 @@
                 "typeHandlerVersion": "2.0",
                 "autoUpgradeMinorVersion": true,
                 "settings": {
-                    "timestamp": "[parameters('customExtensionTimestamp')]"
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/researchit2/create-linux-vm/master/scripts/kilroy-was-here.sh"
+                    ]
                 },
                 "protectedSettings": {
-                    "commandToExecute": "[parameters('customExtensionCommandToExecute')]",
-                    "fileUris": [
-                        ""
-                    ]
+                    "commandToExecute": "sh kilroy-was-here.sh"
                 }
             }
         }
