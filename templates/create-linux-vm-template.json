@@ -64,6 +64,9 @@
         },
         "imageVersion": {
             "type": "string"
+        },
+        "customExtensionTimestamp": {
+            "type": "string"
         }
     },
     "variables": {
@@ -202,7 +205,8 @@
                 "settings": {
                     "fileUris": [
                         "https://raw.githubusercontent.com/researchit2/create-linux-vm/master/scripts/kilroy-was-here.sh"
-                    ]
+                    ],
+                    "timestamp": "[int(parameters('customExtensionTimestamp'))]"
                 },
                 "protectedSettings": {
                     "commandToExecute": "sh kilroy-was-here.sh"

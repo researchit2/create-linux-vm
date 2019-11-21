@@ -114,7 +114,7 @@ def main():
     """
     custom_extension_timestamp = unique_number
     custom_extension_command_to_execute = "sh kilroy-was-here.sh"
-    custom_extension_file_uris = "https://github.com/researchit2/create-linux-vm/blob/master/scripts/kilroy-was-here.sh"
+    custom_extension_file_uris = "https://raw.githubusercontent.com/researchit2/create-linux-vm/master/scripts/kilroy-was-here.sh"
     image_publisher = "Canonical"
     image_offer = "UbuntuServer"
     image_sku = "18.04-LTS"
@@ -346,7 +346,8 @@ def deploy_virtual_machine_from_arm_template(
         "imagePublisher": image_publisher,
         "imageOffer": image_offer,
         "imageSku": image_sku,
-        "imageVersion": image_version
+        "imageVersion": image_version,
+        "customExtensionTimestamp": custom_extension_timestamp
     }
 
     deployment_parameters = {k: {"value": v}
