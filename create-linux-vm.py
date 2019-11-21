@@ -35,28 +35,31 @@ def main():
     if azure_tenant_id is None:
         exit(print("Missing AZURE_TENANT_ID"))
 
-    if not azure_object_id is None:
+    if azure_object_id is None:
         exit(print("Missing AZURE_OBJECT_ID"))
 
-    if not azure_client_id is None:
+    if azure_client_id is None:
         exit(print("Missing AZURE_CLIENT_ID"))
 
-    if not azure_secret_id is None:
+    if azure_secret_id is None:
         exit(print("Missing AZURE_SECRET_ID"))
 
-    if not subscription_id is None:
+    if subscription_id is None:
         exit(print("Missing AZURE_SUBSCR_ID"))
 
-    if not cost_center_tag is None:
+    if cost_center_tag is None:
         exit(print("Missing COST_CENTER_TAG"))
 
-    if not service_tag is None:
+    if service_tag is None:
         exit(print("Missing SERVICE_TAG"))
 
-    if not created_by is None:
+    if created_by is None:
         exit(print("Missing CREATED_BY_TAG"))
 
-    if not resource_group_name:
+    if resource_location is None:
+        resource_location = "westeurope"
+
+    if resource_group_name is None:
         # create Azure Resource Group
         resource_group_name_prefix = "researchit2"
         resource_group_name = (
@@ -74,9 +77,6 @@ def main():
         create_azure_resource_group(
             resource_group_name, resource_group_parameters)
 
-    if not resource_location:
-        resource_location = "westeurope"
-
     # create Azure Key Vault
     key_vault_name = "kv" + unique_number
     print(f"Creating key vault {key_vault_name}.")
@@ -88,6 +88,7 @@ def main():
         cost_center_tag,
         service_tag,
         created_by,
+        resource_location
     )
 
     public_ip_address_name = "pip" + unique_number
@@ -100,6 +101,7 @@ def main():
         cost_center_tag,
         service_tag,
         created_by,
+        resource_location
     )
 
     # deploy Azure Virtual Machine
@@ -168,67 +170,6 @@ def get_storage_account_key(
     return storage_keys
 
 
-def get_virtual_machine_managed_identity_id(resource_group_name, virtual_machine_name):
-    ""
-    credentials = get_azure_credentials(
-        azure_tenant_id, azure_client_id, azure_secret_id
-    )
-
-    vm_resource = ComputeManagementClient(credentials, subscription_id)
-
-    try:
-        virtual_machine = vm_resource.virtual_machines.get(
-            resource_group_name, virtual_machine_name, custom_headers=None, raw=False
-        )
-    except CloudError as ex:
-        print(ex)
-    return virtual_machine.identity.principal_id
-
-
-def assign_managed_system_identity(resource_group_name, virtual_machine_name):
-    "Assign managed system identiy to an Azure Virtual Machine"
-    credentials = get_azure_credentials(
-        azure_tenant_id, azure_client_id, azure_secret_id
-    )
-
-    params_identity = {}
-    params_identity["type"] = ResourceIdentityType.system_assigned
-    vm_resource = ComputeManagementClient(credentials, subscription_id)
-    msi_parameters = {"location": resource_location,
-                      "identity": params_identity}
-    try:
-        virtual_machine = vm_resource.virtual_machines.create_or_update(
-            resource_group_name,
-            virtual_machine_name,
-            msi_parameters,
-            custom_headers=None,
-            raw=False,
-        )
-    except CloudError as ex:
-        print(ex)
-    return virtual_machine.result()
-
-
-def fetch_secret_from_key_vault(
-    resource_group_name, key_vault_name, key_vault_secret_name
-):
-    "Fetch a secret from an Azure Key Vault"
-    credentials = get_azure_credentials(
-        azure_tenant_id, azure_client_id, azure_secret_id
-    )
-    key_vault_data_plane_client = KeyVaultClient(credentials)
-    key_vault_info = get_key_vault(resource_group_name, key_vault_name)
-    try:
-        fetch_secret = key_vault_data_plane_client.get_secret(
-            key_vault_info.properties.vault_uri,
-            key_vault_secret_name,
-            secret_version=KeyVaultId.version_none,
-        )
-    except CloudError as ex:
-        print(ex)
-    return fetch_secret
-
-
 def create_secret_in_key_vault(
     resource_group_name, key_vault_name, key_vault_secret_name, key_vault_secret_value
 ):
@@ -272,6 +213,7 @@ def create_key_vault(
     cost_center_tag,
     service_tag,
     created_by,
+    resource_location
 ):
     "create Azure Key Vault"
     credentials = get_azure_credentials(
@@ -460,6 +402,7 @@ def create_public_ip_prefix_ip_address(
     cost_center_tag,
     service_tag,
     created_by,
+    resource_location
 ):
     "Create an Azure Public IP Prefix Public IP Address"
     credentials = get_azure_credentials(
