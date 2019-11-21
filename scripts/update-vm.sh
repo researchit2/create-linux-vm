@@ -1,5 +1,5 @@
 #!/bin/bash
 
 apt update; apt upgrade -y -qq
-# apt install -y wget
+apt install wget -y -qq
 # /sbin/shutdown -h now
