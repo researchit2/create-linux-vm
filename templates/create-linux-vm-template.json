@@ -67,6 +67,12 @@
         },
         "customExtensionTimestamp": {
             "type": "string"
+        },
+        "customExtensionFileUris": {
+            "type": "string"
+        },
+        "customExtensionCommandToExecute": {
+            "type": "string"
         }
     },
     "variables": {
@@ -204,12 +210,12 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/researchit2/create-linux-vm/master/scripts/kilroy-was-here.sh"
+                        "[parameters('customExtensionFileUris')]"
                     ],
                     "timestamp": "[int(parameters('customExtensionTimestamp'))]"
                 },
                 "protectedSettings": {
-                    "commandToExecute": "sh kilroy-was-here.sh"
+                    "commandToExecute": "[parameters('customExtensionCommandToExecute')]"
                 }
             }
         }
