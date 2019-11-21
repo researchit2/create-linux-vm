@@ -105,6 +105,16 @@ def main():
     )
 
     # deploy Azure Virtual Machine
+
+    """
+    "timestamp": "[parameters('customExtensionTimestamp')]"
+    "protectedSettings": {
+    "commandToExecute": "[parameters('customExtensionCommandToExecute')]",
+    "fileUris": ["[parameters('customExtensionFileUris')]"]
+    """
+    custom_extension_timestamp = unique_number
+    custom_extension_command_to_execute = "sh kilroy-was-here.sh"
+    custom_extension_file_uris = "https://github.com/researchit2/create-linux-vm/blob/master/scripts/kilroy-was-here.sh"
     image_publisher = "Canonical"
     image_offer = "UbuntuServer"
     image_sku = "18.04-LTS"
@@ -138,6 +148,9 @@ def main():
         virtual_machine_size,
         admin_user_name,
         admin_password,
+        custom_extension_timestamp,
+        custom_extension_command_to_execute,
+        custom_extension_file_uris,
         deployment_name,
         public_ip_address_name,
         subscription_id,
@@ -263,6 +276,9 @@ def deploy_virtual_machine_from_arm_template(
     virtual_machine_size,
     admin_user_name,
     admin_password,
+    custom_extension_timestamp,
+    custom_extension_command_to_execute,
+    custom_extension_file_uris,
     deployment_name,
     public_ip_address_name,
     subscription_id,
@@ -324,6 +340,9 @@ def deploy_virtual_machine_from_arm_template(
         "virtualMachineSize": virtual_machine_size,
         "adminUsername": admin_user_name,
         "adminPassword": admin_password,
+        "customExtensionTimestamp": custom_extension_timestamp,
+        "customExtensionCommandToExecute": custom_extension_command_to_execute,
+        "customExtensionFileUris": custom_extension_file_uris,
         "costCenter": cost_center_tag,
         "service": service_tag,
         "createdBy": created_by,

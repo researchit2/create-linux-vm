@@ -44,6 +44,15 @@
         "adminPassword": {
             "type": "secureString"
         },
+        "customExtensionTimestamp": {
+            "type": "string"
+        },
+        "customExtensionCommandToExecute": {
+            "type": "string"
+        },
+        "customExtensionFileUris": {
+            "type": "array"
+        },
         "costCenter": {
             "type": "string"
         },
@@ -181,6 +190,33 @@
                 "costCenter": "[parameters('costCenter')]",
                 "service": "[parameters('service')]",
                 "createdBy": "[parameters('createdBy')]"
+            }
+        },
+        {
+            "apiVersion": "2018-06-01",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('virtualMachineName'),'/post-install-script')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[variables('vmName')]"
+            ],
+            "tags": {
+                "displayName": "post-install-script"
+            },
+            "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "timestamp": "[parameters('customExtensionTimestamp')]"
+                },
+                "protectedSettings": {
+                    "commandToExecute": "[parameters('customExtensionCommandToExecute')]",
+                    "fileUris": [
+                        ""
+                    ]
+                }
             }
         }
     ],
